@@ -5,9 +5,9 @@ import { useNavigation } from "@/hooks/use-navigation"
 
 const navItems = [
   { href: "/", label: "Home" },
-  { href: "/", label: "About" },
+  { href: "/#footer", label: "About" },
   { href: "/#features", label: "Services" },
-  { href: "/", label: "Contact" },
+  { href: "/#footer", label: "Contact" },
 ]
 
 export function NavLinks() {
