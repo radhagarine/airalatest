@@ -1,65 +1,109 @@
-import { Clock, Shield, Globe2, MessageSquare } from 'lucide-react'
+import { Clock, Shield, Globe2, MessageSquare, Calendar, Headphones, Phone, MessageCircle } from 'lucide-react'
 
 const features = [
   {
-    icon: Clock,
-    title: "24/7 Availability",
-    description: "Round-the-clock reception services that never sleep, ensuring your business is always accessible."
+    icon: Calendar,
+    iconColor: "bg-red-500/20",
+    iconFill: "text-red-500",
+    title: "Scheduling",
+    description:
+      "Simplify appointment booking and management, from healthcare to personal services. Clients can easily schedule, reschedule, or cancel appointments through natural conversation.",
+    isActive: true,
   },
   {
     icon: Shield,
+    iconColor: "bg-gray-300/20",
+    iconFill: "text-gray-400",
     title: "Enterprise Security",
-    description: "Bank-grade encryption and security protocols to protect your sensitive business communications."
+    description:
+      "Bank-grade encryption and security protocols to protect your sensitive business communications.",
+    isActive: false,
   },
   {
     icon: Globe2,
+    iconColor: "bg-gray-300/20",
+    iconFill: "text-gray-400",
     title: "Multilingual Support",
-    description: "Seamless communication in multiple languages, breaking down international barriers."
+    description:
+      "Seamless communication in multiple languages, breaking down international barriers.",
+    isActive: false,
+  },
+  {
+    icon: MessageCircle,
+    iconColor: "bg-gray-300/20",
+    iconFill: "text-gray-400",
+    title: "Smart Interactions",
+    description:
+      "AI-powered conversations that adapt and learn from each interaction for better service.",
+    isActive: false,
+  },
+  {
+    icon: Phone,
+    iconColor: "bg-gray-300/20",
+    iconFill: "text-gray-400",
+    title: "Outbound Calls",
+    description:
+      "Automate your outreach campaigns with intelligent call handling and follow-ups to maximize engagement and conversion rates.",
+    isActive: false,
   },
   {
     icon: MessageSquare,
-    title: "Smart Interactions",
-    description: "AI-powered conversations that adapt and learn from each interaction for better service."
-  }
+    iconColor: "bg-gray-300/20",
+    iconFill: "text-gray-400",
+    title: "Social Media Support",
+    description:
+      "Manage and respond to social media interactions across multiple platforms, maintaining consistent brand voice and rapid response times.",
+    isActive: false,
+  },
 ]
 
 export function Features() {
   return (
-    <section className="py-16 sm:py-24 relative overflow-hidden" id="features">
-      <div className="absolute inset-0 bg-gray-50 opacity-50" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%239C92AC" fill-opacity="0.05" fill-rule="evenodd"%3E%3Ccircle cx="3" cy="3" r="3"/%3E%3Ccircle cx="13" cy="13" r="3"/%3E%3C/g%3E%3C/svg%3E")' }}></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12 sm:mb-16 features-fade-in-up">
-          <h2 className="text-2xl sm:text-4xl font-bold mb-4 text-gray-800">
-            Powerful Features for Modern Business
+    <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-gray-50 to-white">
+      <div className="container px-4 md:px-6 mx-auto max-w-7xl">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
+            Voice Integrated Features for the Modern Businesses
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600">
+          <p className="text-xl text-gray-600 max-w-[800px] mx-auto">
             Everything you need to revolutionize your reception services
           </p>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {features.map((feature, index) => {
-            const Icon = feature.icon
-            return (
-              <div 
-                key={feature.title}
-                className="bg-white rounded-lg p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#8B0000]/20 group features-fade-in-up flex flex-col h-full"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="flex flex-col items-center text-center flex-grow">
-                  <div className="bg-[#8B0000]/10 rounded-full p-3 mb-4 group-hover:bg-[#8B0000]/20 transition-all duration-300 transform group-hover:scale-110">
-                    <Icon className="w-6 h-6 text-[#8B0000] group-hover:features-pulse" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-800 group-hover:text-[#8B0000] transition-all duration-300 mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300 text-center">
-                    {feature.description}
-                  </p>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((item, index) => (
+            <div
+              key={index}
+              className={`relative group overflow-hidden rounded-2xl bg-gradient-to-br ${
+                item.isActive ? 'from-white to-gray-50/50' : 'from-gray-100 to-gray-200/50'
+              } p-8 shadow-lg transition-all duration-500 hover:shadow-xl border border-gray-200/50 backdrop-blur-xl`}
+            >
+              {/* Glossy overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 pointer-events-none" />
+              
+              {/* Icon wrapper */}
+              <div className={`w-14 h-14 rounded-full ${item.iconColor} flex items-center justify-center mb-6 relative mx-auto`}>
+                <item.icon className={`w-7 h-7 ${item.iconFill}`} />
+                {/* Metallic shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent rounded-full" />
               </div>
-            )
-          })}
+
+              <h3 className={`text-xl font-semibold mb-3 text-center ${item.isActive ? 'text-gray-900' : 'text-gray-500'}`}>
+                {item.title}
+              </h3>
+              <p className={`text-sm leading-relaxed text-center ${item.isActive ? 'text-gray-600' : 'text-gray-400'}`}>
+                {item.description}
+              </p>
+
+              {!item.isActive && (
+                <div className="absolute top-4 right-4 bg-gray-200 text-gray-600 px-2 py-1 rounded-full text-xs font-semibold">
+                  Coming Soon
+                </div>
+              )}
+
+              {/* Interactive hover effect */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            </div>
+          ))}
         </div>
       </div>
     </section>
