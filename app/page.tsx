@@ -4,9 +4,8 @@ import { useState } from "react"
 import { Navbar } from "@/components/nav/navbar"
 import { Hero } from "@/components/hero/hero"
 import InteractiveHub from "@/components/industries/industry-hub"
-//import { Industries } from "@/components/industries/industries"
+import FAQS from "@/components/faqs/faqs"
 import { Features } from "@/components/features/features"
-import { Testimonials } from "@/components/testimonials/testimonials"
 import { Footer } from "@/components/footer/footer"
 import { SignUpDialog } from "@/components/auth/signup-dialog"
 import { SignInDialog } from "@/components/auth/signin-dialog"
@@ -34,7 +33,7 @@ export default function Home() {
           <InteractiveHub />
         </div>
         <Features />
-        <Testimonials />
+        <FAQS />
       </div>
       <Footer />
       <SignUpDialog 

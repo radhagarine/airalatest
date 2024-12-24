@@ -117,15 +117,6 @@ export function Hero({ onOpenSignUp }: HeroProps) {
         </div>
       </div>
 
-      <audio 
-        ref={audioRef}
-        preload="auto"
-        loop
-      >
-        <source src="/audio/hero_aud.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-
       {audioLoaded && (
         <button
           onClick={toggleAudio}
