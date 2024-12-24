@@ -2,17 +2,19 @@
 
 import * as React from "react"
 import { useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AiraLogo } from "@/components/ui/aira-logo"
-import { Upload, Mail, Lock, AlertCircle } from 'lucide-react'
+import { Mail, Lock, AlertCircle } from 'lucide-react'
 import Link from "next/link"
 import { useAuth } from "@/hooks/use-auth"
 import { toast } from "sonner"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useRouter } from "next/navigation"
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 interface SignUpDialogProps {
   isOpen: boolean;
@@ -27,32 +29,37 @@ export function SignUpDialog({ isOpen, onClose, onSignInClick }: SignUpDialogPro
   const [confirmPassword, setConfirmPassword] = useState("")
   const [avatar, setAvatar] = useState<File | null>(null)
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const { signUp } = useAuth()
+  const router = useRouter()
 
 async function onSubmit(event: React.FormEvent) {
-  event.preventDefault()
-  setIsLoading(true)
+  event.preventDefault();
+  setIsLoading(true);
+  setErrorMessage(null);
+  setSuccessMessage(null);
 
   try {
-    if (password !== confirmPassword) {
-      throw new Error("Passwords do not match")
-    }
-
-    const { error, confirmationSent } = await signUp(email, password, avatar)
-    if (error) throw error
+    const { error, confirmationSent } = await signUp(email, password, avatar);
+    if (error) throw error;
 
     if (confirmationSent) {
-      setShowConfirmation(true)
-      toast.success("Please check your email to confirm your account")
-    } else {
-      toast.success("Successfully signed up!")
-      onClose()
+      toast.success("Account created successfully! Please check your email for confirmation.");
+      setShowConfirmation(true);
     }
+
+    setSuccessMessage("Account created successfully! Please check your email for confirmation.");
+    setTimeout(() => {
+      onClose();
+      router.push('/signin');
+    }, 3000);
   } catch (error) {
-    console.error("Sign up error:", error)
-    toast.error(error instanceof Error ? error.message : "Failed to sign up")
+    console.error("Sign up error:", error);
+    const message = error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
+    setErrorMessage(message);
   } finally {
-    setIsLoading(false)
+    setIsLoading(false);
   }
 }
 
@@ -91,10 +98,17 @@ async function onSubmit(event: React.FormEvent) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto border-[#8B0000] bg-white/95 backdrop-blur-md blurred-border rounded-xl p-6">
+        <DialogTitle>
+          <VisuallyHidden>Sign Up</VisuallyHidden>
+        </DialogTitle>
+        <DialogDescription>
+          Please fill in the details to create an account.
+        </DialogDescription>
         <div className="flex flex-col items-center space-y-6 py-6 px-4">
           <AiraLogo />
           <h2 className="text-2xl font-semibold tracking-tight">Create Account</h2>
           
+          {/* 
           <div className="relative w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center group cursor-pointer hover:bg-gray-200 transition-colors">
             <input
               type="file"
@@ -105,6 +119,15 @@ async function onSubmit(event: React.FormEvent) {
             <Upload className="w-8 h-8 text-gray-400 group-hover:text-gray-500" />
           </div>
           <span className="text-sm text-gray-500">Upload profile picture</span>
+          */}
+
+          {errorMessage && (
+            <div className="text-red-500 text-sm">{errorMessage}</div>
+          )}
+
+          {successMessage && (
+            <div className="text-green-500 text-sm">{successMessage}</div>
+          )}
 
           <form onSubmit={onSubmit} className="w-full space-y-4">
             <div className="space-y-2">
@@ -115,7 +138,7 @@ async function onSubmit(event: React.FormEvent) {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="pl-10"
+                  className="pl-10 h-12 w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -131,7 +154,7 @@ async function onSubmit(event: React.FormEvent) {
                   id="password"
                   type="password"
                   placeholder="Create a password"
-                  className="pl-10"
+                  className="pl-10 h-12 w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -147,7 +170,7 @@ async function onSubmit(event: React.FormEvent) {
                   id="confirm-password"
                   type="password"
                   placeholder="Confirm your password"
-                  className="pl-10"
+                  className="pl-10 h-12 w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required

@@ -6,7 +6,7 @@ export function Hero() {
     <div className="relative min-h-[80vh] flex items-center">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 z-0 bg-[url('/office-bg.jpg')] bg-cover bg-center"
+        className="absolute inset-0 z-0 bg-[url('/images/office-bg.jpg')] bg-cover bg-center"
         style={{
           backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3))`
         }}

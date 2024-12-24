@@ -21,6 +21,7 @@ export function Hero({ onOpenSignUp }: HeroProps) {
 
     const handleCanPlayThrough = () => {
       setAudioLoaded(true)
+      audio.muted = true;
       audio.play().catch((error) => {
         console.error("Audio playback failed:", error)
       })

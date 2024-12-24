@@ -43,11 +43,10 @@ export function HeroMedia() {
         muted
         loop
         preload="auto"
-        poster="/office-bg.jpg"
+        poster="/images/office-bg.jpg"
         aria-hidden="true"
       >
-        <source src="/hero-video.mp4" type="video/mp4" />
-        <source src="/hero-video.webm" type="video/webm" />
+        <source src="/audio/vedio1.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay */}

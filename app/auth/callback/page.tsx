@@ -11,14 +11,17 @@ export default function AuthCallbackPage() {
     const handleAuthCallback = async () => {
       const supabase = getSupabaseBrowserClient()
       try {
-        const { error } = await supabase.auth.getSession()
+        const { data: { session }, error } = await supabase.auth.getSession()
         if (error) {
           throw error
         }
-        router.push('/')
+        if (session) {
+          router.push('/dashboard')
+        } else {
+          router.push('/signin')
+        }
       } catch (error) {
         console.error('Error getting session:', error instanceof Error ? error.message : 'Unknown error')
-        // Handle the error appropriately, e.g., redirect to an error page
         router.push('/auth-error')
       }
     }

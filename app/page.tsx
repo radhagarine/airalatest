@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { Navbar } from "@/components/nav/navbar"
 import { Hero } from "@/components/hero/hero"
-import { Industries } from "@/components/industries/industries"
+import InteractiveHub from "@/components/industries/industry-hub"
+//import { Industries } from "@/components/industries/industries"
 import { Features } from "@/components/features/features"
 import { Testimonials } from "@/components/testimonials/testimonials"
 import { Footer } from "@/components/footer/footer"
@@ -27,9 +28,11 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col">
       <Navbar onOpenSignUp={handleOpenSignUp} onOpenSignIn={handleOpenSignIn} />
-      <div className="flex-grow">
+      <div className="flex-grow flex flex-col justify-center items-center">
         <Hero onOpenSignUp={handleOpenSignUp} />
-        <Industries />
+        <div className="my-8">
+          <InteractiveHub />
+        </div>
         <Features />
         <Testimonials />
       </div>

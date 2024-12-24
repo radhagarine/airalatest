@@ -1,13 +1,13 @@
 import { create } from 'zustand'
 import { getSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type { User, Session } from '@supabase/supabase-js'
-import { useRouter } from 'next/navigation'
+//import { useRouter } from 'next/navigation'
 
 interface AuthState {
   isAuthenticated: boolean
   user: User | null
   session: Session | null
-  login: (email: string, password: string) => Promise<{ error: Error | null, success: boolean }>
+  login: (email: string, password: string) => Promise<{ error: Error | null, confirmationSent: boolean }>
   signUp: (email: string, password: string, avatar: File | null) => Promise<{ error: Error | null, confirmationSent: boolean }>
   logout: () => Promise<void>
   setUser: (user: User | null, session: Session | null) => void
@@ -25,19 +25,13 @@ export const useAuth = create<AuthState>((set, get) => ({
         password,
       })
       
-      if (error) throw error
-
-      if (data.user && data.session) {
-        set({ isAuthenticated: true, user: data.user, session: data.session })
-        return { error: null, success: true }
+      if (error) {
+        return { error, confirmationSent: false }
       }
 
-      return { error: new Error('Login failed'), success: false }
+      return { error: null, confirmationSent: true }
     } catch (error) {
-      return { 
-        error: error instanceof Error ? error : new Error('Login failed'), 
-        success: false 
-      }
+      return { error: error instanceof Error ? error : new Error('Login failed'), confirmationSent: false }
     }
   },
   signUp: async (email: string, password: string, avatar: File | null) => {

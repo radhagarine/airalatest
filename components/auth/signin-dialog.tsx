@@ -10,7 +10,6 @@ import { AiraLogo } from "@/components/ui/aira-logo"
 import { Mail, Lock } from 'lucide-react'
 import Link from "next/link"
 import { useAuth } from "@/hooks/use-auth"
-import { toast } from "sonner"
 import { useRouter } from 'next/navigation'
 
 interface SignInDialogProps {
@@ -23,24 +22,24 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const { login } = useAuth()
   const router = useRouter()
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault()
     setIsLoading(true)
+    setErrorMessage(null)
 
     try {
-      const { error, success } = await login(email, password)
+      console.log("Attempting to log in with:", email, password);
+      const { error } = await login(email, password)
       if (error) throw error
       
-      if (success) {
-        toast.success("Successfully signed in!")
-        onClose()
-        router.push('/dashboard')
-      }
+      router.push('/dashboard')
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to sign in")
+      const message = error instanceof Error ? error.message : "An unexpected error occurred. Please try again."
+      setErrorMessage(message)
     } finally {
       setIsLoading(false)
     }
@@ -58,6 +57,10 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
           <div id="signin-dialog-description" className="sr-only">
             Enter your credentials to sign in to your account
           </div>
+
+          {errorMessage && (
+            <div className="text-red-500 text-sm">{errorMessage}</div>
+          )}
 
           <div className="w-full space-y-6">
             <form onSubmit={onSubmit} className="w-full space-y-4">
@@ -95,33 +98,25 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
 
               <Button
                 type="submit"
-                className="w-full h-12 rounded-full bg-[#8B0000] hover:bg-[#8B0000]/90 text-base font-medium"
+                className="w-full bg-[#8B0000] hover:bg-[#8B0000]/90"
                 disabled={isLoading}
               >
                 {isLoading ? "Signing In..." : "Sign In"}
               </Button>
-
-              <div className="text-center mt-2">
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-gray-600 hover:text-[#8B0000] transition-colors"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
             </form>
 
-            <div className="text-center space-y-1">
-              <p className="text-sm text-gray-500">
-                Don't have an account?{" "}
-                <button
-                  onClick={onSignUpClick}
-                  className="text-[#8B0000] hover:underline font-medium"
-                >
-                  Create Account
-                </button>
-              </p>
-            </div>
+            <p className="text-center text-sm text-gray-500">
+              Forgot your password?{" "}
+              <Link href="/forgot-password" className="text-[#8B0000] hover:underline">
+                Reset it
+              </Link>
+            </p>
+            <p className="text-center text-sm text-gray-500">
+              Don't have an account?{" "}
+              <button onClick={onSignUpClick} className="text-[#8B0000] hover:underline">
+                Create Account
+              </button>
+            </p>
           </div>
         </div>
       </DialogContent>
