@@ -1,6 +1,7 @@
 import { Toaster } from 'sonner'
 import { getSupabaseServerClient } from "@/lib/supabase-server"
 import { SessionProvider } from './SessionProvider'
+import { initializeAuth } from '@/hooks/use-auth'
 import './globals.css'
 
 export default async function RootLayout({
@@ -9,6 +10,10 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const supabase = getSupabaseServerClient()
+
+  if (typeof window !== 'undefined') {
+    initializeAuth().catch(console.error)
+  }
   
   try {
     const {

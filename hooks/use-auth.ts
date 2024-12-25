@@ -88,13 +88,19 @@ export const useAuth = create<AuthState>((set, get) => ({
   }),
 }))
 
-// Initialize auth state from Supabase session
-getSupabaseBrowserClient().auth.getSession().then(({ data: { session } }) => {
+export const initializeAuth = async () => {
+  const supabase = getSupabaseBrowserClient()
+  
+  // Initial session check
+  const { data: { session } } = await supabase.auth.getSession()
   useAuth.getState().setUser(session?.user ?? null, session)
-})
 
-// Set up auth state change listener
-getSupabaseBrowserClient().auth.onAuthStateChange((event, session) => {
-  useAuth.getState().setUser(session?.user ?? null, session)
-})
+  // Set up auth state change listener
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    console.log('Auth state changed:', event, session?.user?.id)
+    useAuth.getState().setUser(session?.user ?? null, session)
+  })
+
+  return subscription
+}
 

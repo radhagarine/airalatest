@@ -10,32 +10,33 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       const supabase = getSupabaseBrowserClient()
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession()
-        if (error) {
-          throw error
-        }
-        if (session) {
-          router.push('/dashboard/profile')
-        } else {
-          router.push('/signin')
-        }
-      } catch (error) {
-        console.error('Error getting session:', error instanceof Error ? error.message : 'Unknown error')
+
+      // First handle the OAuth callback
+      const { error: callbackError } = await supabase.auth.getSession()
+      if (callbackError) {
+        console.error('Auth callback error:', callbackError.message)
         router.push('/auth-error')
+        return
+      }
+
+      // Then check session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+      if (sessionError) {
+        console.error('Session error:', sessionError.message)
+        router.push('/auth-error')
+        return
+      }
+
+      if (session) {
+        router.push('/dashboard')
+      } else {
+        router.push('/signin')
       }
     }
 
     handleAuthCallback()
   }, [router])
 
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-2xl font-semibold mb-4">Confirming your authentication...</h1>
-        <p className="text-gray-600">Please wait while we complete the process.</p>
-      </div>
-    </div>
-  )
+  return null
 }
 

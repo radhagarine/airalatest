@@ -33,12 +33,10 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
   const router = useRouter()
 
   useEffect(() => {
+    console.log(' test 1 Auth state:', isAuthenticated)
     if (isAuthenticated) {
       onClose()
-      // Use setTimeout to ensure dialog closes before navigation
-      setTimeout(() => {
-        router.replace('/dashboard/profile')
-      }, 100)
+      router.replace('/dashboard')
     }
   }, [isAuthenticated, router, onClose])
 
@@ -52,7 +50,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
       const { error } = await login(email, password)
       if (error) throw error
       
-      //router.push('/dashboard/profile')
+      //router.push('/dashboard')
     } catch (error) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred. Please try again."
       console.error("Login failed:", message)
@@ -131,7 +129,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
 
             <p className="text-center text-sm text-gray-500">
               Forgot your password?{" "}
-              <Link href="/forgot-password" className="text-[#8B0000] hover:underline">
+              <Link href="/auth/forgot-password" className="text-[#8B0000] hover:underline">
                 Reset it
               </Link>
             </p>
