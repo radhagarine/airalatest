@@ -25,8 +25,14 @@ export const getSupabaseBrowserClient = () => {
             }
             return undefined
           },
-          set: (name: string, value: string, options: any) => {
+          /*set: (name: string, value: string, options: any) => {
             document.cookie = `${name}=${value}; ${Object.entries(options).map(([k, v]) => `${k}=${v}`).join('; ')}`
+          },*/
+          set: (name: string, value: string, options: any) => {
+            document.cookie = `${name}=${encodeURIComponent(value)}; path=/; secure; samesite=lax; ${Object.entries({
+              ...options,
+              path: '/'
+            }).map(([k, v]) => `${k}=${v}`).join('; ')}`
           },
           remove: (name: string, options: any) => {
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${Object.entries(options).map(([k, v]) => `${k}=${v}`).join('; ')}`

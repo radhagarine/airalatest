@@ -24,12 +24,16 @@ export const useAuth = create<AuthState>((set, get) => ({
         email,
         password,
       })
+
+      console.log("Login response:", data)
       
       if (error) {
+        console.log("Login error:", data)
         return { error, confirmationSent: false }
       }
 
       if(data.user && data.session) {
+        console.log("Session created:", data.session)
         set({
           isAuthenticated: true,
           user: data.user,
