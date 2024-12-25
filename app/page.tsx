@@ -26,8 +26,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <Navbar onOpenSignUp={handleOpenSignUp} onOpenSignIn={handleOpenSignIn} />
-      <div className="flex-grow flex flex-col justify-center items-center">
+      <div>
+        <Navbar onOpenSignUp={handleOpenSignUp} onOpenSignIn={handleOpenSignIn} />
+      </div>
+      <div className="flex-grow flex flex-col justify-center items-center pt-20">
         <Hero onOpenSignUp={handleOpenSignUp} />
         <div className="my-8">
           <InteractiveHub />

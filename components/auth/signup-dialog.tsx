@@ -49,7 +49,7 @@ async function onSubmit(event: React.FormEvent) {
       setShowConfirmation(true);
     }
 
-    setSuccessMessage("Account created successfully! Please check your email for confirmation.");
+    setSuccessMessage("Account created successfully! Please check your email for confirmation and SignIn back.");
     setTimeout(() => {
       onClose();
       router.push('/signin');

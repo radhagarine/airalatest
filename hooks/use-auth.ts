@@ -91,7 +91,7 @@ getSupabaseBrowserClient().auth.getSession().then(({ data: { session } }) => {
 getSupabaseBrowserClient().auth.onAuthStateChange((event, session) => {
   useAuth.getState().setUser(session?.user ?? null, session)
   if (event === 'SIGNED_IN') {
-    window.location.href = '/dashboard'
+    window.location.href = '/dashboard/profile'
   } else if (event === 'SIGNED_OUT') {
     window.location.href = '/'
   }

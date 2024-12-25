@@ -13,7 +13,7 @@ export interface Database {
         Row: {
           id: string
           name: string
-          user_id: string
+          userId: string
           industry_type: string
           address: string
           business_email: string
@@ -23,7 +23,7 @@ export interface Database {
         Insert: {
           id?: string
           name: string
-          user_id: string
+          userId: string
           industry_type?: string
           address?: string
           business_email?: string
@@ -33,7 +33,7 @@ export interface Database {
         Update: {
           id?: string
           name?: string
-          user_id?: string
+          userId?: string
           industry_type?: string
           address?: string
           business_email?: string

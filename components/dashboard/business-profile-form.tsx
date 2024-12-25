@@ -19,7 +19,7 @@ interface BusinessProfileFormProps {
 export function BusinessProfileForm({ business }: BusinessProfileFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState<Omit<Business, 'id' | 'user_id' | 'created_at'>>({
+  const [formData, setFormData] = useState<Omit<Business, 'id' | 'userId' | 'created_at'>>({
     name: business?.name ?? "",
     industry_type: business?.industry_type ?? "",
     address: business?.address ?? "",
@@ -42,7 +42,7 @@ export function BusinessProfileForm({ business }: BusinessProfileFormProps) {
         .upsert({ 
           ...formData, 
           id: business?.id ?? undefined, 
-          user_id: business?.user_id ?? undefined 
+          userId: business?.userId ?? undefined 
         })
 
       if (error) throw error

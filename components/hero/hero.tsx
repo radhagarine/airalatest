@@ -71,7 +71,8 @@ export function Hero({ onOpenSignUp }: HeroProps) {
 
   return (
     <section 
-      className="relative min-h-[calc(100vh-4rem)] flex items-center pt-16"
+      id="hero"
+      className="relative min-h-[calc(100vh-4rem)] flex items-center pt-20"
       aria-label="Hero section"
       onClick={handleUserInteraction}
     >
@@ -102,7 +103,7 @@ export function Hero({ onOpenSignUp }: HeroProps) {
             </Button>
           </div>
 
-          <div className="relative flex justify-center lg:justify-start lg:-ml-12">
+          {/* <div className="relative flex justify-center lg:justify-start lg:-ml-12">
             <div className="relative w-[400px] h-[400px] rounded-full overflow-hidden">
               <Image
                 src="/images/hero_img.JPG"
@@ -113,7 +114,7 @@ export function Hero({ onOpenSignUp }: HeroProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#8B0000]/20 to-transparent opacity-75 mix-blend-overlay" />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

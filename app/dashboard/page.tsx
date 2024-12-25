@@ -24,7 +24,7 @@ export default async function DashboardPage() {
   const { data: business, error } = await supabase
     .from("Business")
     .select("*")
-    .eq('user_id', session.user.id)
+    .eq('userId', session.user.id)
     .single()
 
   if (error) {

@@ -20,7 +20,7 @@ export default async function BusinessProfilePage() {
   const result: PostgrestSingleResponse<Business> = await supabase
     .from("Business")
     .select("*")
-    .eq('user_id', session.user.id)
+    .eq('userId', session.user.id)
     .single()
 
   if (result.error) {

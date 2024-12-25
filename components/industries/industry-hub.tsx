@@ -78,7 +78,7 @@ export default function IndustriesSection() {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section id="industries" className="py-16 bg-gray-50">
       <audio ref={restaurantsAudioRef} src="/audio/Restaurants.mp3" />
       <audio ref={beautyAudioRef} src="/audio/Beauty.mp3" />
       <div className="container mx-auto px-4">

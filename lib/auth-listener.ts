@@ -9,7 +9,7 @@ export function setupAuthListener() {
 
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session) {
-      window.location.href = '/dashboard'
+      window.location.href = '/dashboard/profile'
     } else if (event === 'SIGNED_OUT') {
       window.location.href = '/'
     }
