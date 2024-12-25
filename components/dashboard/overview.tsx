@@ -16,7 +16,7 @@ export function Overview({ business }: OverviewProps) {
         <h2 className="text-3xl font-bold tracking-tight">
           Overview
         </h2>
-        <Link href="/dashboard/profile">
+        <Link href="/dashboard">
           <Button>Edit Profile</Button>
         </Link>
       </div>

@@ -37,7 +37,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
       onClose()
       // Use setTimeout to ensure dialog closes before navigation
       setTimeout(() => {
-        router.replace('/dashboard/profile')
+        router.replace('/dashboard')
       }, 100)
     }
   }, [isAuthenticated, router, onClose])
