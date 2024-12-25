@@ -29,28 +29,20 @@ export async function middleware(req: NextRequest) {
     }
   )
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  const { data: { session } } = await supabase.auth.getSession()
+  console.log('test3 Session in middleware:', session)
+  console.log('test4 Request path:', req.nextUrl.pathname)
+  //console.log('All cookies:', Object.fromEntries(req.))
 
-  // If there is no session and the user is trying to access the dashboard,
-  // redirect them to the home page
+
   if (!session && req.nextUrl.pathname.startsWith('/dashboard')) {
-    const redirectUrl = new URL('/', req.url)
-    return NextResponse.redirect(redirectUrl)
-  }
-
-  // If there is a session and the user is on the home page or sign-in page,
-  // redirect them to the dashboard
-  if (session && (req.nextUrl.pathname === '/' || req.nextUrl.pathname === '/signin')) {
-    const redirectUrl = new URL('/dashboard', req.url)
-    return NextResponse.redirect(redirectUrl)
+    console.log('Redirecting to home - no session')
+    return NextResponse.redirect(new URL('/', req.url))
   }
 
   return res
 }
 
 export const config = {
-  matcher: ['/', '/signin', '/dashboard/:path*'],
+  matcher: ['/dashboard/:path*'],
 }
-

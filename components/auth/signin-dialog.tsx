@@ -33,12 +33,13 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
   const router = useRouter()
 
   useEffect(() => {
-    console.log(' test 1 Auth state:', isAuthenticated)
     if (isAuthenticated) {
       onClose()
-      router.replace('/dashboard')
+      setTimeout(() => {
+        window.location.href = '/dashboard'
+      }, 100)
     }
-  }, [isAuthenticated, router, onClose])
+  }, [isAuthenticated, onClose])
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault()

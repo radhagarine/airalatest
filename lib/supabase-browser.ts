@@ -11,6 +11,11 @@ export const getSupabaseBrowserClient = () => {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         ...supabaseConfig,
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        },
         cookies: {
           get: (name: string) => {
             const cookies = document.cookie.split(';')

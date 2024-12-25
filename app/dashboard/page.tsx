@@ -1,23 +1,20 @@
-// app/dashboard/page.tsx
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/use-auth'
 
 export default function DashboardPage() {
-  const router = useRouter()
   const { isAuthenticated } = useAuth()
-  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
-      router.replace('/signin')
+    console.log("tet 2 in dashboard layout, isauthenciate = ", isAuthenticated)
+    if (!isAuthenticated) {
+      router.replace('/')
     }
-    setIsLoading(false)
-  }, [isAuthenticated, router, isLoading])
+  }, [isAuthenticated, router])
 
-  if (isLoading) return <div>Loading...</div>
   if (!isAuthenticated) return null
 
   return (
