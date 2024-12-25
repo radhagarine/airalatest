@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { Mic, Utensils, Home, Stethoscope, Scissors, ShoppingBag, Briefcase, GraduationCap, Car, Plane, Play, Pause, X } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { AiraLogo } from '../ui/aira-logo'
 
 type RecordingItem = {
   name: string
@@ -85,9 +86,16 @@ export default function IndustriesSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
           {/* Left side: Heading and Description */}
           <div className="space-y-6">
-          <h2 className="text-4xl font-bold text-gray-900">Industries We Serve</h2>
-          <p className="text-xl text-gray-600">
-              AiRA delivers customized AI reception services across industries, optimizing customer interactions while meeting sector-specific requirements and enhancing operational efficiency.
+          <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+              Transform Your Reception
+            </h1>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#8B0000]">
+              with AI Excellence
+            </h2>
+            <p className="text-lg md:text-xl">
+              Experience the future of reception services with Aira. Our AI-powered
+              platform delivers <span className="text-[#8B0000] font-semibold">24/7</span> professional reception coverage with unmatched
+              efficiency and elegance.
             </p>
           </div>
 
@@ -185,7 +193,8 @@ export default function IndustriesSection() {
             </div>
 
             {/* Central Button */}
-            <motion.div
+            <AiraLogo />
+           {/*  <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
@@ -203,7 +212,7 @@ export default function IndustriesSection() {
                   {isRecording ? "Stop Recording" : "Talk to AiRA"}
                 </div>
               </motion.button>
-            </motion.div>
+            </motion.div> */}
 
             {/* Circumferential Items */}
             <div className="absolute inset-0 flex items-center justify-center">
