@@ -20,7 +20,7 @@ export function AuthButtons({ onOpenSignUp, onOpenSignIn }: AuthButtonsProps) {
     <div className="flex items-center space-x-4">
       <Button 
         variant="ghost" 
-        className="hidden sm:inline-flex"
+        className="hidden sm:inline-flex border-2 border-[#8B0000]"
         onClick={onOpenSignIn}
       >
         Log in

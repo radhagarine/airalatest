@@ -83,22 +83,25 @@ export default function IndustriesSection() {
       <audio ref={restaurantsAudioRef} src="/audio/Restaurants.mp3" />
       <audio ref={beautyAudioRef} src="/audio/Beauty.mp3" />
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
-          {/* Left side: Heading and Description */}
-          <div className="space-y-6">
+        <div>
           <h1 className="text-5xl md:text-6xl font-bold leading-tight">
               Transform Your Reception
             </h1>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#8B0000]">
-              with AI Excellence
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#8B0000]">with AI Excellence</h2>
+          </div>
+        <div className="grid grid-cols-3 items-center">
+          <div className="col-span-1">
+          {/* Left side: Heading and Description */}
+          <div className="space-y-6">
+          
             <p className="text-lg md:text-xl">
               Experience the future of reception services with Aira. Our AI-powered
               platform delivers <span className="text-[#8B0000] font-semibold">24/7</span> professional reception coverage with unmatched
               efficiency and elegance.
             </p>
           </div>
-
+        </div>
+        <div className="col-span-2">
           {/* Right side: Interactive Animation */}
           <div className="relative h-[600px] w-full max-w-[600px] mx-auto flex items-center justify-center overflow-hidden">
             {/* Starburst Pattern */}
@@ -279,6 +282,7 @@ export default function IndustriesSection() {
               })}
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>

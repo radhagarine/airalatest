@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useNavigation } from "@/hooks/use-navigation"
 
 const navItems = [
-  { href: "/", label: "Home" },
+  { href: "/#hero", label: "Home" },
   { href: "/#footer", label: "About" },
   { href: "/#industries", label: "Services" },
   { href: "/#faqs", label: "FAQs" },
