@@ -29,6 +29,13 @@ export const useAuth = create<AuthState>((set, get) => ({
         return { error, confirmationSent: false }
       }
 
+      if(data.user && data.session) {
+        set({
+          isAuthenticated: true,
+          user: data.user,
+          session: data.session
+        })
+      }
       return { error: null, confirmationSent: true }
     } catch (error) {
       return { error: error instanceof Error ? error : new Error('Login failed'), confirmationSent: false }
@@ -73,7 +80,6 @@ export const useAuth = create<AuthState>((set, get) => ({
     const supabase = getSupabaseBrowserClient()
     await supabase.auth.signOut()
     set({ isAuthenticated: false, user: null, session: null })
-    window.location.href = '/'
   },
   setUser: (user, session) => set({ 
     isAuthenticated: !!user, 
@@ -90,10 +96,5 @@ getSupabaseBrowserClient().auth.getSession().then(({ data: { session } }) => {
 // Set up auth state change listener
 getSupabaseBrowserClient().auth.onAuthStateChange((event, session) => {
   useAuth.getState().setUser(session?.user ?? null, session)
-  if (event === 'SIGNED_IN') {
-    window.location.href = '/dashboard/profile'
-  } else if (event === 'SIGNED_OUT') {
-    window.location.href = '/'
-  }
 })
 

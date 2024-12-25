@@ -1,8 +1,14 @@
 "use client"
 
 import * as React from "react"
-import { useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { useState, useEffect } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogHeader
+} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -23,8 +29,18 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const { login } = useAuth()
+  const { login, isAuthenticated } = useAuth()
   const router = useRouter()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      onClose()
+      // Use setTimeout to ensure dialog closes before navigation
+      setTimeout(() => {
+        router.replace('/dashboard/profile')
+      }, 100)
+    }
+  }, [isAuthenticated, router, onClose])
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -36,9 +52,10 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
       const { error } = await login(email, password)
       if (error) throw error
       
-      router.push('/dashboard')
+      //router.push('/dashboard/profile')
     } catch (error) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred. Please try again."
+      console.error("Login failed:", message)
       setErrorMessage(message)
     } finally {
       setIsLoading(false)
@@ -51,16 +68,20 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
         className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto border-[#8B0000] bg-white/95 backdrop-blur-md blurred-border rounded-xl p-6"
         aria-describedby="signin-dialog-description"
       >
+        <DialogHeader>
+          <DialogTitle>Welcome Back</DialogTitle>
+          <DialogDescription id="dialog-description">
+            Sign in to your account to continue
+          </DialogDescription>
+        </DialogHeader>
+        
         <div className="flex flex-col items-center space-y-6 py-4">
           <AiraLogo />
-          <h2 className="text-2xl font-semibold tracking-tight">Sign In</h2>
-          <div id="signin-dialog-description" className="sr-only">
-            Enter your credentials to sign in to your account
+          <div role="alert" aria-live="polite">
+            {errorMessage && (
+              <div className="text-red-500 text-sm">{errorMessage}</div>
+            )}
           </div>
-
-          {errorMessage && (
-            <div className="text-red-500 text-sm">{errorMessage}</div>
-          )}
 
           <div className="w-full space-y-6">
             <form onSubmit={onSubmit} className="w-full space-y-4">
@@ -76,6 +97,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    aria-required="true"
                   />
                 </div>
               </div>
@@ -92,6 +114,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    aria-required="true"
                   />
                 </div>
               </div>
@@ -100,6 +123,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
                 type="submit"
                 className="w-full bg-[#8B0000] hover:bg-[#8B0000]/90"
                 disabled={isLoading}
+                aria-busy={isLoading}
               >
                 {isLoading ? "Signing In..." : "Sign In"}
               </Button>
@@ -113,7 +137,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
             </p>
             <p className="text-center text-sm text-gray-500">
               Don't have an account?{" "}
-              <button onClick={onSignUpClick} className="text-[#8B0000] hover:underline">
+              <button onClick={onSignUpClick} className="text-[#8B0000] hover:underline" type="button">
                 Create Account
               </button>
             </p>

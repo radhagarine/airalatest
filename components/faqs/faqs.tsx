@@ -84,9 +84,7 @@ export default function FAQ() {
             <div className="flex flex-col justify-center items-center col-span-1 space-y-4"> {/* Second column for additional queries */}
                 <p className="text-gray-900">
                 Still have questions?{" "}
-                <a href="/contact" className="text-red-500 hover:text-red-600 font-medium">
                     Talk to Aira
-                </a>
                 </p>
                 {/* Avatar section with pulsating rings */}
                 <div className="relative w-80 h-80">

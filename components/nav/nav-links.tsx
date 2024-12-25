@@ -20,7 +20,7 @@ export function NavLinks() {
         <Link
           key={item.href}
           href={item.href}
-          className={`text-sm font-medium transition-colors duration-200 ease-in-out
+          className={`text-lg md:text-xl font-medium transition-colors duration-200 ease-in-out
                       ${item.href.startsWith('/#') 
                         ? 'text-gray-600 hover:text-[#8B0000]'
                         : isActive(item.href)
