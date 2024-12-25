@@ -72,7 +72,7 @@ export function Hero({ onOpenSignUp }: HeroProps) {
   return (
     <section 
       id="hero"
-      className="relative min-h-[calc(100vh-4rem)] flex items-center pt-20"
+      className="relative w-full min-h-[calc(100vh-4rem)] flex items-center pt-20"
       aria-label="Hero section"
       onClick={handleUserInteraction}
     >
@@ -82,17 +82,13 @@ export function Hero({ onOpenSignUp }: HeroProps) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-white space-y-6">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-              Transform Your
-              <br />
-              Reception
+              Hi, I am 
             </h1>
             <h2 className="text-4xl md:text-5xl font-bold text-[#8B0000]">
-              with AI Excellence
+              Aira, 
             </h2>
             <p className="text-lg md:text-xl">
-              Experience the future of reception services with Aira. Our AI-powered
-              platform delivers <span className="text-[#8B0000] font-semibold">24/7</span> professional reception coverage with unmatched
-              efficiency and elegance.
+              your voice enabled AI Reception assistant that can transform your business.
             </p>
             <Button 
               className="bg-[#8B0000] hover:bg-[#8B0000]/90 text-white px-8 py-6 text-lg

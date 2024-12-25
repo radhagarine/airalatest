@@ -23,7 +23,7 @@ export function HeroMedia() {
   }, [])
 
   return (
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-0 w-full h-full">
       {/* Fallback Image */}
       <div 
         className={`absolute inset-0 bg-[url('/office-bg.jpg')] bg-cover bg-center transition-opacity duration-1000
@@ -45,6 +45,7 @@ export function HeroMedia() {
         preload="auto"
         poster="/images/office-bg.jpg"
         aria-hidden="true"
+        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
       >
         <source src="/audio/vedio1.mp4" type="video/mp4" />
       </video>

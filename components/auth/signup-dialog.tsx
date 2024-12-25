@@ -50,10 +50,7 @@ async function onSubmit(event: React.FormEvent) {
     }
 
     setSuccessMessage("Account created successfully! Please check your email for confirmation and SignIn back.");
-    setTimeout(() => {
-      onClose();
-      router.push('/signin');
-    }, 3000);
+    
   } catch (error) {
     console.error("Sign up error:", error);
     const message = error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
