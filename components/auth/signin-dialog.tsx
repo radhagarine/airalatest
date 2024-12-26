@@ -29,18 +29,22 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const { login, isAuthenticated } = useAuth()
+  const { login, isAuthenticated, setUser } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
+    console.log('in signin dialog isauthenticad =', isAuthenticated)
+    
     if (isAuthenticated) {
       onClose()
       // Use setTimeout to ensure dialog closes before navigation
       setTimeout(() => {
+        console.log('in signin dialog redirecting to dashboard')
         router.replace('/dashboard')
       }, 100)
     }
   }, [isAuthenticated, router, onClose])
+
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -49,10 +53,20 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
 
     try {
       console.log("Attempting to log in with:", email, password);
-      const { error } = await login(email, password)
+      const { error, confirmationSent, user, session } = await login(email, password)
       if (error) throw error
       
-      //router.push('/dashboard/profile')
+      console.log('before set user in sigin dialog isauthenciated = ', !!user )
+      console.log('before set user in signin dialog user =', user)
+      console.log('before set user in signin dialog session =', session)
+      setUser(user, session)
+
+      console.log('after set user in sigin dialog isauthenciated = ', !!user )
+      console.log('after set user in signin dialog user =', user)
+      console.log('after set user in signin dialog session =', session)
+
+      router.replace('/dashboard')
+      
     } catch (error) {
       const message = error instanceof Error ? error.message : "An unexpected error occurred. Please try again."
       console.error("Login failed:", message)
@@ -131,7 +145,7 @@ export function SignInDialog({ isOpen, onClose, onSignUpClick }: SignInDialogPro
 
             <p className="text-center text-sm text-gray-500">
               Forgot your password?{" "}
-              <Link href="/forgot-password" className="text-[#8B0000] hover:underline">
+              <Link href="/auth/forgot-password" className="text-[#8B0000] hover:underline">
                 Reset it
               </Link>
             </p>

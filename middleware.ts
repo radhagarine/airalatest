@@ -1,56 +1,25 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import type { Database } from './lib/database.types'
+import { useAuth } from "@/hooks/use-auth"
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-  const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (name: string) => req.cookies.get(name)?.value,
-        set: (name: string, value: string, options: any) => {
-          res.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-        },
-        remove: (name: string, options: any) => {
-          res.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-        },
-      },
-    }
-  )
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  // If there is no session and the user is trying to access the dashboard,
-  // redirect them to the home page
-  if (!session && req.nextUrl.pathname.startsWith('/dashboard')) {
-    const redirectUrl = new URL('/', req.url)
-    return NextResponse.redirect(redirectUrl)
+  const { isAuthenticated } = await useAuth.getState();
+  const res = NextResponse.next();
+  console.log('in middlware, isauthenticated =', isAuthenticated)
+  if (!isAuthenticated && req.nextUrl.pathname.startsWith('/dashboard')) {
+    console.log('Redirecting to home - no session');
+    const redirectUrl = new URL('/', req.url);
+    return NextResponse.redirect(redirectUrl);
   }
 
-  // If there is a session and the user is on the home page or sign-in page,
-  // redirect them to the dashboard
-  if (session && (req.nextUrl.pathname === '/' || req.nextUrl.pathname === '/signin')) {
-    const redirectUrl = new URL('/dashboard', req.url)
-    return NextResponse.redirect(redirectUrl)
+  if (isAuthenticated && (req.nextUrl.pathname === '/' || req.nextUrl.pathname === '/signin')) {
+    const redirectUrl = new URL('/dashboard', req.url);
+    return NextResponse.redirect(redirectUrl);
   }
 
-  return res
+  return res;
 }
 
 export const config = {
   matcher: ['/', '/signin', '/dashboard/:path*'],
 }
-

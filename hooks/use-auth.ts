@@ -7,7 +7,7 @@ interface AuthState {
   isAuthenticated: boolean
   user: User | null
   session: Session | null
-  login: (email: string, password: string) => Promise<{ error: Error | null, confirmationSent: boolean }>
+  login: (email: string, password: string) => Promise<{ error: Error | null; confirmationSent: boolean; user: User | null; session: Session | null; }>
   signUp: (email: string, password: string, avatar: File | null) => Promise<{ error: Error | null, confirmationSent: boolean }>
   logout: () => Promise<void>
   setUser: (user: User | null, session: Session | null) => void
@@ -20,13 +20,13 @@ export const useAuth = create<AuthState>((set, get) => ({
   login: async (email: string, password: string) => {
     const supabase = getSupabaseBrowserClient()
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const {  data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
       
       if (error) {
-        return { error, confirmationSent: false }
+        return { error, confirmationSent: false, user: null, session: null }
       }
 
       if(data.user && data.session) {
@@ -36,9 +36,9 @@ export const useAuth = create<AuthState>((set, get) => ({
           session: data.session
         })
       }
-      return { error: null, confirmationSent: true }
+      return { error: null, confirmationSent: true, user: data.user, session:data.session }
     } catch (error) {
-      return { error: error instanceof Error ? error : new Error('Login failed'), confirmationSent: false }
+      return { error: error instanceof Error ? error : new Error('Login failed'), confirmationSent: false, user: null, session: null}
     }
   },
   signUp: async (email: string, password: string, avatar: File | null) => {
