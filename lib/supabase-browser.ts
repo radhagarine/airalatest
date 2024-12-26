@@ -1,35 +1,78 @@
+'use client'  // Add this at the top
+
 import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from './database.types'
-import { supabaseConfig } from './supabase-config'
+import type { Database } from '@/lib/types/database.types'
+import { ENV } from './config/env'
 
-let supabase: ReturnType<typeof createBrowserClient<Database, 'public'>> | null = null
-
-export const getSupabaseBrowserClient = () => {
-  if (!supabase) {
-    supabase = createBrowserClient<Database, 'public'>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        ...supabaseConfig,
-        cookies: {
-          get: (name: string) => {
-            const cookies = document.cookie.split(';')
-            for (const cookie of cookies) {
-              const [key, value] = cookie.split('=')
-              if (key.trim() === name) return value
-            }
-            return undefined
-          },
-          set: (name: string, value: string, options: any) => {
-            document.cookie = `${name}=${value}; ${Object.entries(options).map(([k, v]) => `${k}=${v}`).join('; ')}`
-          },
-          remove: (name: string, options: any) => {
-            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${Object.entries(options).map(([k, v]) => `${k}=${v}`).join('; ')}`
-          }
-        }
-      }
-    )
-  }
-  return supabase
+type AuthResponse = {
+  error: {
+    message: string;
+    status: number;
+  } | null;
 }
 
+export const supabase = createBrowserClient<Database>(
+  ENV.SUPABASE_URL,
+  ENV.SUPABASE_ANON_KEY,
+  {
+    cookies: {
+      get(name: string) {
+        if (typeof document === 'undefined') return ''
+        
+        const match = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith(`${name}=`))
+        return match ? match.split('=')[1] : ''
+      },
+      set(name: string, value: string, options: { path: string; maxAge?: number }) {
+        if (typeof document === 'undefined') return
+        
+        let cookie = `${name}=${value}; path=${options.path}; SameSite=Lax; Secure`
+        if (options.maxAge) {
+          cookie += `; Max-Age=${options.maxAge}`
+        }
+        document.cookie = cookie
+      },
+      remove(name: string, options: { path: string }) {
+        if (typeof document === 'undefined') return
+        
+        document.cookie = `${name}=; path=${options.path}; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+      }
+    },
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+      flowType: 'pkce'
+    }
+  }
+)
+
+export const signInWithGoogle = async (): Promise<AuthResponse> => {
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${ENV.APP_URL}/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent'
+        }
+      }
+    })
+    
+    if (error) throw error
+    
+    return {
+      error: null
+    }
+  } catch (error: any) {
+    console.error('Error signing in with Google:', error)
+    return {
+      error: {
+        message: error.message || 'Failed to sign in with Google',
+        status: error.status || 500
+      }
+    }
+  }
+}

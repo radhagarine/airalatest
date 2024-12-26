@@ -16,7 +16,7 @@ export function Navbar({ onOpenSignUp, onOpenSignIn }: NavbarProps) {
         <div className="flex h-16 items-center justify-between">
           <BrandLogo />
           <NavLinks />
-          <AuthButtons onOpenSignUp={onOpenSignUp} onOpenSignIn={onOpenSignIn} />
+          <AuthButtons onOpenSignIn={onOpenSignIn} onOpenSignUp={onOpenSignUp} />
         </div>
       </div>
     </header>

@@ -7,7 +7,6 @@ import InteractiveHub from "@/components/industries/industry-hub"
 import FAQS from "@/components/faqs/faqs"
 import { Features } from "@/components/features/features"
 import { Footer } from "@/components/footer/footer"
-import { SignUpDialog } from "@/components/auth/signup-dialog"
 import { SignInDialog } from "@/components/auth/signin-dialog"
 
 export default function Home() {
@@ -38,14 +37,10 @@ export default function Home() {
         <FAQS />
       </div>
       <Footer />
-      <SignUpDialog 
-        isOpen={showSignUp}
-        onClose={() => setShowSignUp(false)}
-        onSignInClick={handleOpenSignIn}
-      />
       <SignInDialog 
         isOpen={showSignIn}
         onClose={() => setShowSignIn(false)}
+        onSignInClick={handleOpenSignIn}
         onSignUpClick={handleOpenSignUp}
       />
     </main>
